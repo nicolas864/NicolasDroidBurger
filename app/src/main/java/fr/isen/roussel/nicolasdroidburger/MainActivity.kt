@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val inputHour: Button = findViewById(R.id.inputHour)
 
         val validate: Button = findViewById(R.id.validate)
-        validate.setOnClickListener(this)
+        //validate.setOnClickListener(this)
+
+        validate.setOnClickListener{
+            if(validate()){
+                val address = findViewById<EditText>(R.id.inputAdresse).text.toString()
+                val name = findViewById<EditText>(R.id.inputPrenom).text.toString()
+                val burger = findViewById<Spinner>(R.id.inputBurger).selectedItem.toString()
+                val hour = findViewById<Button>(R.id.inputHour).text.toString()
+
+                //Toast.makeText(applicationContext,"Done", Toast.LENGTH_LONG).show()
+                val pref = getPreferences(Context.MODE_PRIVATE)
+                val editor = pref.edit()
+                editor.putString("name", findViewById<TextView>(R.id.inputNom).text.toString())
+                editor.putString("firstname", findViewById<EditText>(R.id.inputPrenom).text.toString())
+                editor.apply()
+
+
+                val intent = Intent(this, HomeActivity::class.java)
+                intent.putExtra("name", name )
+                intent.putExtra("address",address)
+                intent.putExtra("burger", burger)
+                intent.putExtra("hour", hour)
+                startActivity(intent)
+            }
+        }
 
 
         //Spinner
@@ -55,20 +79,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
 
+        //val validate: Button = findViewById(R.id.validate)
+
+
+
     }
 
-    fun onSave(view: View) {
-        val pref = getPreferences(Context.MODE_PRIVATE)
-        val editor = pref.edit()
+    private fun saveData(view: View) {
 
-        editor.putString("name", findViewById<TextView>(R.id.inputNom).text.toString())
-        editor.putString("firstname", findViewById<EditText>(R.id.inputPrenom).text.toString())
-        editor.putString("adresse", findViewById<EditText>(R.id.inputAdresse).text.toString())
-        editor.putString("tel", findViewById<EditText>(R.id.inputTelephone).text.toString())
-        editor.putString("hour", findViewById<Button>(R.id.inputHour).text.toString())
-        editor.putString("Burger", findViewById<EditText>(R.id.inputBurger).text.toString())
 
-        editor.apply()
+
+
+
 
         val toast = Toast.makeText(applicationContext, "Saved", Toast.LENGTH_LONG)
         toast.setGravity(Gravity.TOP, 0, 140)
@@ -105,23 +127,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    override fun onClick(p0: View?) {
+    /*override fun onClick(p0: View?) {
         when(p0?.id){
             R.id.validate->{
                 if(validate()){
                     //onSave()
-                    val address = findViewById<EditText>(R.id.inputAdresse).text.toString()
 
-                    Toast.makeText(applicationContext,"Done", Toast.LENGTH_LONG).show()
-                    val intent = Intent(this, HomeActivity::class.java)
-                    intent.putExtra("address",address)
-                    startActivity(intent)
 
                 }
             }
         }
 
-    }
+    }*/
+
+
+
 
 
 
